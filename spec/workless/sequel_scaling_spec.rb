@@ -74,11 +74,11 @@ describe Delayed::Sequel::Job do
     end
 
     def should_scale_workers_to(num)
-      Delayed::Sequel::Job::Mock.scaler.client.should_receive(:post_ps_scale).once.with(ENV['APP_NAME'], 'worker', num)
+      Delayed::Sequel::Job::Mock.scaler.should_receive(:scale_workers).once.with(num)
     end
 
     def should_not_scale_workers
-      Delayed::Sequel::Job::Mock.scaler.client.should_not_receive(:post_ps_scale)
+      Delayed::Sequel::Job::Mock.scaler.should_not_receive(:scale_workers)
     end
 
 end

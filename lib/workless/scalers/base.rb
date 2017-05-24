@@ -22,6 +22,13 @@ module Delayed
 
       end
 
+      module HerokuPlatform
+
+        def client
+          @client ||= ::PlatformAPI.connect_oauth(ENV['WORKLESS_OAUTH_TOKEN'])
+        end
+      end
+
     end
   end
 end

@@ -12,9 +12,9 @@ Gem::Specification.new do |s|
   s.date = %q{2011-06-30}
   s.description = %q{Extension to Delayed Job to enable workers to scale up when needed}
   s.email = %q{paul.crabtree@gmail.com}
-  
+
   s.files = Dir.glob("{rails,lib}/**/*") + %w(LICENSE README.md )
-  
+
   s.homepage = %q{http://github.com/lostboy/workless}
   s.require_paths = ["lib"]
   s.summary = %q{Use delayed job workers only when theyre needed on Heroku}
@@ -22,8 +22,9 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency(%q<rails>)
   s.add_runtime_dependency(%q<heroku-api>)
   s.add_runtime_dependency(%q<rush>)
+  s.add_runtime_dependency(%q<platform-api>)
   s.add_runtime_dependency(%q<delayed_job>, [">= 2.0.7"])
 
-  s.add_development_dependency(%q<rspec>)
+  s.add_development_dependency(%q<rspec>, ["<= 2.14"])
 end
 

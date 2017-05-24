@@ -36,10 +36,10 @@ describe Delayed::Workless::Scaler::HerokuCedar do
   end
 
   def should_scale_workers_to(num)
-    Delayed::Workless::Scaler::HerokuCedar.client.should_receive(:post_ps_scale).once.with(ENV['APP_NAME'], 'worker', num)
+    Delayed::Workless::Scaler::HerokuCedar.should_receive(:scale_workers).once.with(num)
   end
 
   def should_not_scale_workers
-    Delayed::Workless::Scaler::HerokuCedar.client.should_not_receive(:post_ps_scale)
+    Delayed::Workless::Scaler::HerokuCedar.should_not_receive(:scale_workers)
   end
 end
