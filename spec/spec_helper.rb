@@ -3,10 +3,10 @@ require 'bundler/setup'
 require 'simplecov'
 require 'coveralls'
 
-SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
   SimpleCov::Formatter::HTMLFormatter,
   Coveralls::SimpleCov::Formatter
-)
+]
 SimpleCov.start
 
 Bundler.require(:default)
@@ -83,7 +83,6 @@ class FutureJob
     0
   end
 end
-
 
 Delayed::ActiveRecord::Job::Mock.send(:include, Delayed::Workless::Scaler)
 Delayed::Mongoid::Job::Mock.send(:include, Delayed::Workless::Scaler)

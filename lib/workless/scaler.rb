@@ -10,9 +10,9 @@ module Delayed
         base.send :extend, ClassMethods
         if base.to_s.match?(/ActiveRecord/)
           base.class_eval do
-            after_commit 'self.class.scaler.down', on: :update, if: Proc.new {|r| !r.failed_at.nil? }
-            after_commit 'self.class.scaler.down', on: :destroy, if: Proc.new {|r| r.destroyed? or !r.failed_at.nil? }
-            after_commit 'self.class.scaler.up', on: :create
+            after_commit :scaler_down, on: :update, if: proc { |r| !r.failed_at.nil? }
+            after_commit :scaler_down, on: :destroy, if: proc { |r| r.destroyed? or !r.failed_at.nil? }
+            after_commit :scaler_up, on: :create
           end
         elsif base.to_s.match?(/Sequel/)
           base.send(:define_method, 'after_destroy') do
@@ -29,11 +29,19 @@ module Delayed
           end
         else
           base.class_eval do
-            after_destroy 'self.class.scaler.down'
-            after_create 'self.class.scaler.up'
-            after_update 'self.class.scaler.down', unless: Proc.new {|r| r.failed_at.nil? }
+            after_destroy :scaler_down
+            after_create :scaler_up
+            after_update :scaler_down, unless: proc { |r| r.failed_at.nil? }
           end
         end
+      end
+
+      def scaler_up
+        self.class.scaler.up
+      end
+
+      def scaler_down
+        self.class.scaler.down
       end
 
       module ClassMethods
