@@ -10,9 +10,9 @@ module Delayed
         base.send :extend, ClassMethods
         if base.to_s.match?(/ActiveRecord/)
           base.class_eval do
-            after_commit 'self.class.scaler.down'.to_sym, on: :update, if: Proc.new {|r| !r.failed_at.nil? }
-            after_commit 'self.class.scaler.down'.to_sym, on: :destroy, if: Proc.new {|r| r.destroyed? or !r.failed_at.nil? }
-            after_commit 'self.class.scaler.up'.to_sym, on: :create
+            after_commit 'self.class.scaler.down', on: :update, if: Proc.new {|r| !r.failed_at.nil? }
+            after_commit 'self.class.scaler.down', on: :destroy, if: Proc.new {|r| r.destroyed? or !r.failed_at.nil? }
+            after_commit 'self.class.scaler.up', on: :create
           end
         elsif base.to_s.match?(/Sequel/)
           base.send(:define_method, 'after_destroy') do
